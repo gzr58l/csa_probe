@@ -4,12 +4,18 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
-
+        
         {
             "type": "node",
             "request": "launch",
-            "name": "test_http",
-            "program": "${workspaceRoot}/test_http.js"
+            "name": "Launch Program",
+            "program": "${workspaceRoot}/rest_request.js"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "rest_http",
+            "program": "${workspaceRoot}/rest_http.js"
         },
         {
             "type": "node",

@@ -22,10 +22,13 @@ function getJSON(options, cb){
 
 
 var options = { 
-    host: 'csademo4.solutionplace.svcs.hpe.com',
+    hostname: 'csademo4.solutionplace.svcs.hpe.com',
     port: 8444,
     path: '/idm-service/v2.0/tokens',
     method: 'POST',
+    headers: {
+    'Content-Type': 'application/json'
+    },
     Authorization: 'Basic ' + new Buffer('idmTransportUser:cloud').toString('base64')   
 };
 
