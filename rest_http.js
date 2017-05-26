@@ -22,10 +22,11 @@ function getJSON(options, cb){
 
 
 var options = { 
-    host: 'jsonplaceholder.typicode.com',
-    port: 80,
-    path: '/posts/1',
-    method: 'GET'
+    host: 'csademo4.solutionplace.svcs.hpe.com',
+    port: 8444,
+    path: '/idm-service/v2.0/tokens',
+    method: 'POST',
+    Authorization: 'Basic ' + new Buffer('idmTransportUser:cloud').toString('base64')   
 };
 
 getJSON(options, function(err, result){
