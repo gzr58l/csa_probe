@@ -1,0 +1,27 @@
+{
+  "name": "csa_probe",
+  "version": "1.0.0",
+  "description": "CSA rest probe",
+  "main": "rest_test.js",
+  "scripts": {
+    "test": "node rest_test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gzr58l/csa_probe.git"
+  },
+  "keywords": [
+    "REST",
+    "CSA"
+  ],
+  "author": "Carl Kanzabedian",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gzr58l/csa_probe/issues"
+  },
+  "homepage": "https://github.com/gzr58l/csa_probe#readme",
+  "dependencies": {
+    "node-rest-client": "^3.1.0",
+    "request": "^2.81.0"
+  }
+}
