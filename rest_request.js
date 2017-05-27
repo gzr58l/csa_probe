@@ -45,8 +45,9 @@ function performRequest(endpoint, method, data, success) {
     });
 
     res.on('end', function() {
-      console.log(responseString);
+      console.log('----------- Response String --------------------\n' + responseString);
       var responseObject = JSON.parse(responseString);
+      console.log('----------- Response Object -----------------------\n' + responseObject.token.id );
       success(responseObject);
     });
   });
@@ -55,7 +56,7 @@ function performRequest(endpoint, method, data, success) {
   req.end();
 }
 
-function login() {
+function GetToken() {
   performRequest('/idm-service/v2.0/tokens', 'POST', {
     "passwordCredentials" : {
         "username" : "consumer",
@@ -63,8 +64,8 @@ function login() {
         },
         "tenantName" : "CONSUMER"
     },  function(data) {
-    console.log('Received Token');
+    console.log('Received Token ' + data.token.id);
   });
 }
 
-login();
+GetToken();
