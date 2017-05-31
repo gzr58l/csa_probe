@@ -6,21 +6,33 @@ var username = 'idmTransportUser';
 var password = 'cloud';
 var portno = 8444;
 var token_path = '/idm-service/v2.0/tokens';
-    
+var mpp_path = '/csa/api/mpp/mpp-offering/filter';
+var off_path = '/csa/api/mpp/mpp-offering'
+var csa_token = '';
+
 
 function performRequest(endpoint, method, data, success) {
   var dataString = JSON.stringify(data);
   var headers = {};
-  
+  console.log('in preformRequest with csa_token = ' + csa_token);
   if (method == 'GET') {
+       headers = {
+        'Accept': '*/*',
+        'Content-Type': 'application/json',
+        'Content-Length': dataString.length,
+        'Authorization' : 'Basic ' + new Buffer(username + ':' + password).toString('base64'),
+        'x-auth-token' : csa_token
+       };
     endpoint += '?' + querystring.stringify(data);
+    console.log('---------- end point -------------\n' + endpoint);
   }
   else {
     headers = {
       'Accept': '*/*',
       'Content-Type': 'application/json',
       'Content-Length': dataString.length,
-      'Authorization' : 'Basic ' + new Buffer(username + ':' + password).toString('base64')
+      'Authorization' : 'Basic ' + new Buffer(username + ':' + password).toString('base64'),
+      'x-auth-token' : csa_token
     };
   }
 
@@ -45,9 +57,8 @@ function performRequest(endpoint, method, data, success) {
     });
 
     res.on('end', function() {
-      console.log('----------- Response String --------------------\n' + responseString);
       var responseObject = JSON.parse(responseString);
-      console.log('----------- Response Object -----------------------\n' + responseObject.token.id );
+      //console.log('----------- Response Object -----------------------\n' + responseObject.token.id );
       success(responseObject);
     });
   });
@@ -57,6 +68,7 @@ function performRequest(endpoint, method, data, success) {
 }
 
 function GetToken() {
+  console.log('in GetToken');
   performRequest('/idm-service/v2.0/tokens', 'POST', {
     "passwordCredentials" : {
         "username" : "consumer",
@@ -64,8 +76,37 @@ function GetToken() {
         },
         "tenantName" : "CONSUMER"
     },  function(data) {
-    console.log('Received Token ' + data.token.id);
+      csa_token = data.token.id;
+      console.log('Received Token--------\n' + csa_token);
+      GetMppOfferings();
+  });
+}
+
+
+function GetMppOfferings() {
+  console.log('in GetMppOfferings\n');
+  performRequest(mpp_path, 'POST', {
+        'approval':'ALL'
+       },
+    function(data) {
+    console.log('Offerings---------\n' );
+    console.dir (data, {depth:null, colors:true});
+    GetOfferingDetails(data.members[0].id, data.members[0].catalogId, data.members[0].category.name)
+  });
+}
+
+function GetOfferingDetails(offering_id, catalog_id, category_name) {
+  console.log('in GetOfferingDetails\n');
+  performRequest(off_path + '/' + offering_id, 'GET', {
+      catalogId : catalog_id,
+      category : category_name
+    },
+  function (data) {
+    console.log('Offering Details------\n');
+    console.dir(data, {depth:null, colors:true});
   });
 }
 
 GetToken();
+
+// GetMppOfferings();
