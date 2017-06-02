@@ -44,8 +44,7 @@ function performRequest(endpoint, method, data, success) {
     headers: headers,
   };
 
-  // ignore self-signed certificates
-  process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+  // ignore self-signed certificates  process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
   var req = https.request(options, function(res) {
     res.setEncoding('utf-8');
